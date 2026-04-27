@@ -1,0 +1,892 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bruno Proença · Industrial Software Engineer</title>
+  <meta name="description" content="Técnico de Automação & Graduando em Engenharia de Software — Unindo OT e IT para criar soluções de inteligência de dados industriais." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,700&family=JetBrains+Mono:wght@300;400;500;700&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            bg:      '#f8fafc',
+            surface: '#ffffff',
+            border:  '#e2e8f0',
+            cyan:    '#0284c7',
+            amber:   '#d97706',
+            muted:   '#64748b',
+            dark:    '#0f172a',
+          },
+          fontFamily: {
+            condensed: ['Barlow Condensed', 'sans-serif'],
+            mono:      ['JetBrains Mono', 'monospace'],
+            body:      ['Barlow', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+
+  <style>
+    /* ── Base ────────────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { background: #f8fafc; }
+    body {
+      background: #f8fafc;
+      color: #334155;
+      font-family: 'Barlow', sans-serif;
+      font-weight: 400;
+      overflow-x: hidden;
+    }
+
+    /* ── Grid lines background ──────────────────────── */
+    {
+      background-image:
+        linear-gradient(rgba(2,132,199,.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(2,132,199,.05) 1px, transparent 1px);
+      background-size: 60px 60px;
+    }
+
+    /* ── Sombras corporativas ────────────────── */
+    .card-hover {
+      position: relative;
+      border: 1px solid #e2e8f0;
+      background: #ffffff;
+      transition: border-color .3s, box-shadow .3s, transform .3s;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+    }
+    .card-hover:hover {
+      border-color: rgba(2,132,199,.4);
+      box-shadow: 0 10px 25px -5px rgba(2,132,199,.15), 0 8px 10px -6px rgba(2,132,199,.1);
+      transform: translateY(-3px);
+    }
+    .card-hover-amber:hover {
+      border-color: rgba(217,119,6,.4);
+      box-shadow: 0 10px 25px -5px rgba(217,119,6,.15), 0 8px 10px -6px rgba(217,119,6,.1);
+    }
+
+    /* ── Scroll reveal ──────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity .7s ease, transform .7s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ── Nav ────────────────────────────────────────────────── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      backdrop-filter: blur(16px) saturate(180%);
+      background: rgba(248, 250, 252, .85);
+      border-bottom: 1px solid #e2e8f0;
+      transition: border-color .3s;
+    }
+    .nav-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .7rem; letter-spacing: .12em;
+      text-transform: uppercase; color: #64748b;
+      font-weight: 600;
+      transition: color .2s;
+    }
+    .nav-link:hover { color: #0284c7; }
+
+    /* ── Hero ───────────────────────────────────────────────── */
+    .hero-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 900;
+      font-style: italic;
+      line-height: .92;
+      letter-spacing: -.02em;
+    }
+    .hero-subtitle {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .78rem;
+      letter-spacing: .1em;
+    }
+
+    .underline-anim {
+      position: relative; display: inline-block;
+    }
+    .underline-anim::after {
+      content: '';
+      position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 3px;
+      background: #0284c7;
+      animation: underlineGrow 1.2s 1s ease forwards;
+    }
+    @keyframes underlineGrow { to { width: 100%; } }
+
+    .cursor::after {
+      content: '_';
+      animation: blink .8s step-end infinite;
+      color: #0284c7;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+
+    /* ── Bento Grid ─────────────────────────────────────────── */
+    .skill-badge {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .65rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      padding: .2rem .6rem;
+      border-radius: 4px;
+      border: 1px solid currentColor;
+      background: rgba(255,255,255,0.8);
+      font-weight: 600;
+    }
+
+    .progress-bar {
+      height: 4px;
+      background: #e2e8f0;
+      border-radius: 2px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; width: 0;
+      background: #0284c7;
+      border-radius: 2px;
+      transition: width 1.2s cubic-bezier(.25,.46,.45,.94);
+    }
+    .progress-fill.amber-fill { background: #d97706; }
+
+    /* ── Carousel ───────────────────────────────────────────── */
+    .carousel-wrapper { position: relative; overflow: hidden; border-radius: 6px; }
+    .carousel-track {
+      display: flex;
+      transition: transform .6s cubic-bezier(.25,.46,.45,.94);
+    }
+    .carousel-slide {
+      min-width: 100%; position: relative;
+      aspect-ratio: 16/9;
+      background: #f1f5f9;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .carousel-slide img {
+      width: 100%; height: 100%; object-fit: cover;
+    }
+    .carousel-btn {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: rgba(255,255,255,.9);
+      border: 1px solid #cbd5e1;
+      color: #64748b;
+      width: 40px; height: 40px;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; z-index: 10;
+      transition: all .2s;
+      font-size: 1.1rem;
+      border-radius: 50%;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+    }
+    .carousel-btn:hover {
+      border-color: #0284c7; color: #0284c7;
+      box-shadow: 0 4px 12px rgba(2,132,199,.2);
+    }
+    .carousel-btn.prev { left: 12px; }
+    .carousel-btn.next { right: 12px; }
+    .carousel-dots {
+      display: flex; justify-content: center; gap: 8px;
+      margin-top: 16px;
+    }
+    .dot {
+      width: 24px; height: 4px;
+      background: #cbd5e1; cursor: pointer;
+      transition: background .3s;
+      border-radius: 2px;
+    }
+    .dot.active { background: #0284c7; }
+
+    /* ── Timeline ───────────────────────────────────────────── */
+    .timeline-line {
+      position: absolute; left: 20px; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, transparent, #e2e8f0 2%, #e2e8f0 98%, transparent);
+    }
+    .timeline-dot {
+      position: absolute; left: -28px; top: 4px;
+      width: 12px; height: 12px;
+      border-radius: 50%;
+      background: #ffffff;
+      border: 2px solid currentColor;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    /* ── Buttons ───────────────────────────────────── */
+    .btn-primary {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700;
+      padding: .75rem 2rem;
+      border: 2px solid #0284c7;
+      color: #0284c7;
+      background: transparent;
+      cursor: pointer;
+      position: relative; overflow: hidden;
+      transition: color .3s;
+      text-decoration: none;
+      display: inline-block;
+      border-radius: 4px;
+    }
+    .btn-primary::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: #0284c7;
+      transform: scaleX(0); transform-origin: left;
+      transition: transform .3s ease;
+      z-index: -1;
+    }
+    .btn-primary:hover { color: #ffffff; }
+    .btn-primary:hover::before { transform: scaleX(1); }
+
+    .btn-secondary {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .75rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 700;
+      padding: .75rem 2rem;
+      border: 1px solid #cbd5e1;
+      color: #475569;
+      background: #ffffff;
+      cursor: pointer;
+      transition: all .3s;
+      text-decoration: none;
+      display: inline-block;
+      border-radius: 4px;
+    }
+    .btn-secondary:hover {
+      background: #f1f5f9; border-color: #94a3b8; color: #0f172a;
+    }
+
+    .social-link {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .75rem; letter-spacing: .1em; font-weight: 600;
+      color: #64748b;
+      text-decoration: none;
+      transition: color .2s;
+      display: flex; align-items: center; gap: .5rem;
+    }
+    .social-link:hover { color: #0284c7; }
+
+    /* ── Utilities ──────────────────────────────────────── */
+    .section-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .7rem; letter-spacing: .2em; text-transform: uppercase;
+      color: #0284c7; font-weight: 700;
+    }
+    .section-title {
+      font-family: 'Barlow Condensed', sans-serif;
+      font-weight: 800; font-style: italic;
+      letter-spacing: -.01em; line-height: 1;
+    }
+    .tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: .65rem; letter-spacing: .08em; text-transform: uppercase; font-weight: 700;
+      padding: .2rem .6rem;
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      color: #0369a1;
+      border-radius: 4px;
+    }
+    .tag-amber {
+      background: #fffbeb;
+      border-color: #fde68a;
+      color: #b45309;
+    }
+
+    #mobile-menu { display: none; }
+    #mobile-menu.open { display: flex; }
+  </style>
+</head>
+<body class="relative">
+
+<nav>
+  <div class="max-w-6xl mx-auto px-5 flex items-center justify-between h-14">
+    <a href="#hero" class="flex items-center gap-2">
+      <span class="font-mono text-xs text-cyan font-bold">[ BP ]</span>
+      <span class="font-condensed font-bold text-sm uppercase tracking-widest text-dark">Bruno Proença</span>
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#skills"  class="nav-link">Skills</a>
+      <a href="#project" class="nav-link">Projeto</a>
+      <a href="#timeline" class="nav-link">Timeline</a>
+      <a href="#contact" class="nav-link">Contato</a>
+    </div>
+    <button id="hamburger" class="md:hidden text-muted hover:text-cyan transition-colors p-2" aria-label="Menu">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="currentColor">
+        <rect y="3" width="20" height="2" rx="1"/>
+        <rect y="9" width="20" height="2" rx="1"/>
+        <rect y="15" width="20" height="2" rx="1"/>
+      </svg>
+    </button>
+  </div>
+  <div id="mobile-menu" class="flex-col border-t border-border px-5 py-4 gap-4 bg-white md:hidden">
+    <a href="#skills"   onclick="closeMobileMenu()" class="nav-link">Skills</a>
+    <a href="#project"  onclick="closeMobileMenu()" class="nav-link">Projeto</a>
+    <a href="#timeline" onclick="closeMobileMenu()" class="nav-link">Timeline</a>
+    <a href="#contact"  onclick="closeMobileMenu()" class="nav-link">Contato</a>
+  </div>
+</nav>
+
+<section id="hero" class="relative min-h-screen flex items-center grid-bg overflow-hidden pt-14">
+  <div class="max-w-6xl mx-auto px-5 py-24 w-full">
+    <div class="grid lg:grid-cols-2 gap-16 items-center">
+
+      <div>
+        <div class="flex items-center gap-3 mb-8">
+          <div class="w-2.5 h-2.5 rounded-full bg-cyan" style="animation: blink .8s step-end infinite;"></div>
+          <span class="section-label">Available for collaboration</span>
+        </div>
+
+        <h1 class="hero-title text-dark mb-2">
+          <span class="block text-5xl sm:text-6xl lg:text-7xl xl:text-8xl">BRIDGING</span>
+          <span class="block text-5xl sm:text-6xl lg:text-7xl xl:text-8xl" style="color:#0284c7;">AUTOMATION</span>
+          <span class="block text-5xl sm:text-6xl lg:text-7xl xl:text-8xl">&amp; SOFTWARE</span>
+          <span class="block text-5xl sm:text-6xl lg:text-7xl xl:text-8xl underline-anim">ENGINEERING</span>
+        </h1>
+
+        <p class="hero-subtitle text-muted mt-8 mb-10 leading-loose max-w-md cursor font-semibold">
+          // Transformo dados brutos de máquinas em decisões estratégicas
+        </p>
+
+        <div class="flex flex-wrap gap-4">
+          <a href="#project" class="btn-primary">Ver Projetos</a>
+          <a href="#contact" class="btn-secondary">Contato</a>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4 mt-14 pt-8 border-t border-border">
+          <div>
+            <div class="font-condensed font-bold text-3xl text-dark">OT</div>
+            <div class="font-mono text-xs text-muted font-semibold mt-1">Chão de Fábrica</div>
+          </div>
+          <div>
+            <div class="font-condensed font-bold text-3xl" style="color:#0284c7;">+</div>
+            <div class="font-mono text-xs text-muted font-semibold mt-1">Convergência</div>
+          </div>
+          <div>
+            <div class="font-condensed font-bold text-3xl text-dark">IT</div>
+            <div class="font-mono text-xs text-muted font-semibold mt-1">Tecnologia da Informação</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-hover rounded-xl bg-white p-0 overflow-hidden hidden lg:block border border-border shadow-lg">
+        <div class="flex items-center justify-between px-4 py-3 border-b border-border bg-slate-50">
+          <div class="flex items-center gap-2">
+            <span class="w-3 h-3 rounded-full bg-red-400"></span>
+            <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+            <span class="w-3 h-3 rounded-full bg-green-400"></span>
+          </div>
+          <span class="font-mono text-xs text-slate-400 font-semibold">bruno@ambev: ~</span>
+          <div class="w-12"></div>
+        </div>
+        <div class="p-6 font-mono text-sm leading-8 text-slate-600 bg-white">
+          <div><span class="text-cyan font-bold">$</span> whoami</div>
+          <div class="text-dark font-semibold">Bruno Proença — Técnico de Automação</div>
+          <div class="mt-3"><span class="text-cyan font-bold">$</span> cat stack.txt</div>
+          <div class="flex gap-2 flex-wrap mt-1"><span class="tag">Python</span> <span class="tag">SQL</span> <span class="tag">Node-RED</span></div>
+          <div class="flex gap-2 flex-wrap mt-2"><span class="tag-amber">CLP Siemens</span> <span class="tag-amber">TIA Portal</span></div>
+          <div class="flex gap-2 flex-wrap mt-2"><span class="tag">JavaScript</span> <span class="tag">HTML/CSS</span></div>
+          <div class="mt-3"><span class="text-cyan font-bold">$</span> cat mission.txt</div>
+          <div class="text-slate-500 max-w-xs leading-6 mt-1">Unir o chão de fábrica (OT) à inteligência de dados (IT) para gerar <span class="text-amber font-bold">decisões estratégicas</span> em tempo real.</div>
+          <div class="mt-3"><span class="text-cyan font-bold">$</span> status</div>
+          <div class="mt-1"><span class="text-green-500 font-bold">●</span> Graduando — Engenharia de Software</div>
+          <div><span class="text-green-500 font-bold">●</span> Graduando — Automação Industrial</div>
+          <div><span class="text-green-500 font-bold">●</span> Ambev — Industrial Data Intelligence</div>
+          <div class="flex items-center gap-1 mt-3">
+            <span class="text-cyan font-bold">$</span>
+            <span class="text-dark font-bold animate-pulse">_</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section id="skills" class="py-24 max-w-6xl mx-auto px-5 bg-white border-y border-border">
+  <div class="reveal mb-12">
+    <div class="section-label mb-2">02 // Competências</div>
+    <h2 class="section-title text-dark text-5xl sm:text-6xl">STACK<br><span style="color:#0284c7;">TÉCNICA</span></h2>
+    <p class="font-body text-slate-600 font-medium mt-4 max-w-lg">Domínio que atravessa as fronteiras entre automação industrial e desenvolvimento de software moderno.</p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <div class="reveal card-hover rounded-lg p-8 lg:col-span-2">
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <span class="tag mb-3 inline-block">Primary Language</span>
+          <h3 class="font-condensed font-bold text-3xl text-dark">Python</h3>
+        </div>
+        <svg width="42" height="42" viewBox="0 0 24 24" fill="none" class="flex-shrink-0">
+          <path d="M12 1.5C6.2 1.5 6.75 4 6.75 4L6.76 6.63H12.11V7.38H4.63S1.5 7 1.5 12.09c0 5.09 2.8 4.91 2.8 4.91H6.1v-2.36s-.13-2.8 2.76-2.8h4.77s2.67.04 2.67-2.58V4.69S16.76 1.5 12 1.5z" fill="#16a34a"/>
+          <path d="M12 22.5c5.8 0 5.25-2.5 5.25-2.5l-.01-2.63H11.89v-.75h7.48s3.13.43 3.13-4.66-2.8-4.91-2.8-4.91H17.9v2.36s.13 2.8-2.76 2.8H10.37S7.7 12.17 7.7 14.79V19.31S7.24 22.5 12 22.5z" fill="#0284c7"/>
+        </svg>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <div class="flex justify-between font-mono text-xs text-dark font-bold mb-1.5"><span>Data Analysis / Pandas</span><span style="color:#0284c7;">88%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="88"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between font-mono text-xs text-dark font-bold mb-1.5"><span>API &amp; Automation Scripts</span><span style="color:#0284c7;">82%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="82"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between font-mono text-xs text-dark font-bold mb-1.5"><span>Industrial Data Pipelines</span><span style="color:#0284c7;">78%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="78"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal card-hover rounded-lg p-8">
+      <span class="tag mb-4 inline-block">Database</span>
+      <h3 class="font-condensed font-bold text-3xl text-dark mb-4">SQL</h3>
+      <div class="flex flex-wrap gap-2 mb-8">
+        <span class="skill-badge text-cyan border-cyan/40">MySQL</span>
+        <span class="skill-badge text-cyan border-cyan/40">PostgreSQL</span>
+      </div>
+      <div class="space-y-4">
+        <div>
+          <div class="flex justify-between font-mono text-xs text-dark font-bold mb-1.5"><span>Queries Complexas</span><span style="color:#0284c7;">85%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="85"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between font-mono text-xs text-dark font-bold mb-1.5"><span>Modelagem de Dados</span><span style="color:#0284c7;">75%</span></div>
+          <div class="progress-bar"><div class="progress-fill" data-width="75"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal card-hover card-hover-amber rounded-lg p-8">
+      <span class="tag-amber mb-4 inline-block">IoT / Integration</span>
+      <h3 class="font-condensed font-bold text-3xl text-dark mb-3">Node-RED</h3>
+      <p class="font-body text-sm text-slate-600 font-medium mb-6 leading-relaxed">Orquestração de fluxos de dados industriais. Integração MQTT, OPC-UA e APIs REST em tempo real.</p>
+      <div class="progress-bar"><div class="progress-fill amber-fill" data-width="80"></div></div>
+      <div class="flex justify-between font-mono text-xs text-dark font-bold mt-2"><span>Proficiência</span><span style="color:#d97706;">80%</span></div>
+    </div>
+
+    <div class="reveal card-hover card-hover-amber rounded-lg p-8">
+      <span class="tag-amber mb-4 inline-block">Chão de Fábrica · OT</span>
+      <h3 class="font-condensed font-bold text-3xl text-dark mb-2">CLP Siemens</h3>
+      <p class="font-mono text-xs font-bold text-slate-500 mb-6">TIA Portal · Ladder · STL · SCL</p>
+      <div class="space-y-4">
+        <div>
+          <div class="flex justify-between font-mono text-xs text-dark font-bold mb-1.5"><span>Programação CLP</span><span style="color:#d97706;">90%</span></div>
+          <div class="progress-bar"><div class="progress-fill amber-fill" data-width="90"></div></div>
+        </div>
+        <div>
+          <div class="flex justify-between font-mono text-xs text-dark font-bold mb-1.5"><span>SCADA / HMI</span><span style="color:#d97706;">85%</span></div>
+          <div class="progress-bar"><div class="progress-fill amber-fill" data-width="85"></div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reveal card-hover rounded-lg p-8 lg:col-span-2">
+      <div class="flex items-start justify-between mb-6">
+        <div>
+          <span class="tag mb-3 inline-block">Frontend Dev</span>
+          <h3 class="font-condensed font-bold text-3xl text-dark">JavaScript · HTML/CSS</h3>
+        </div>
+      </div>
+      <div class="grid grid-cols-2 gap-8">
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between font-mono text-xs text-dark font-bold mb-1.5"><span>JavaScript (ES6+)</span><span style="color:#0284c7;">78%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="78"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between font-mono text-xs text-dark font-bold mb-1.5"><span>HTML5 / CSS3</span><span style="color:#0284c7;">85%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="85"></div></div>
+          </div>
+        </div>
+        <div class="space-y-4">
+          <div>
+            <div class="flex justify-between font-mono text-xs text-dark font-bold mb-1.5"><span>Dashboards Industriais</span><span style="color:#0284c7;">92%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="92"></div></div>
+          </div>
+          <div>
+            <div class="flex justify-between font-mono text-xs text-dark font-bold mb-1.5"><span>Responsive Design</span><span style="color:#0284c7;">80%</span></div>
+            <div class="progress-bar"><div class="progress-fill" data-width="80"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="project" class="py-24 border-b border-border bg-slate-50">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="reveal mb-12">
+      <div class="section-label mb-2">03 // Projeto em Destaque</div>
+      <h2 class="section-title text-dark text-5xl sm:text-6xl">INDUSTRIAL<br><span style="color:#d97706;">PORTAL HUB</span></h2>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-12 items-start">
+      <div class="reveal">
+        <div class="carousel-wrapper card-hover rounded-lg bg-white">
+          <div class="flex items-center justify-between px-5 py-3 border-b border-border">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full" style="background:#d97706;"></div>
+              <span class="font-mono text-xs text-slate-500 font-bold">industrial-portal-hub</span>
+            </div>
+            <span class="font-mono text-xs text-slate-500 font-bold" id="carousel-counter">1 / 4</span>
+          </div>
+
+          <div style="position:relative;">
+            <div class="carousel-track" id="carousel-track">
+              <div class="carousel-slide">
+                <img src="assets/dash1.png" alt="Dashboard Área Quente" class="w-full h-full object-cover" />
+              </div>
+              <div class="carousel-slide">
+                <img src="assets/dash2.png" alt="Dashboard Área Fria" class="w-full h-full object-cover" />
+              </div>
+              <div class="carousel-slide">
+                <img src="assets/dash3.png" alt="Arquitetura do Sistema" class="w-full h-full object-cover" />
+              </div>
+              <div class="carousel-slide">
+                <img src="assets/dash4.png" alt="Monitoramento em Tempo Real" class="w-full h-full object-cover" />
+              </div>
+            </div>
+            <button class="carousel-btn prev" id="carousel-prev" aria-label="Anterior">&#8592;</button>
+            <button class="carousel-btn next" id="carousel-next" aria-label="Próximo">&#8594;</button>
+          </div>
+        </div>
+
+        <div class="carousel-dots" id="carousel-dots">
+          <div class="dot active" data-index="0"></div>
+          <div class="dot" data-index="1"></div>
+          <div class="dot" data-index="2"></div>
+          <div class="dot" data-index="3"></div>
+        </div>
+      </div>
+
+      <div class="reveal">
+        <div class="flex flex-wrap gap-2 mb-6">
+          <span class="tag">Python</span>
+          <span class="tag">SQL</span>
+          <span class="tag">Node-RED</span>
+          <span class="tag-amber">TIA Portal</span>
+          <span class="tag">JavaScript</span>
+          <span class="tag-amber">Ambev</span>
+        </div>
+        <h3 class="font-condensed font-bold text-4xl text-dark mb-4">Portal de Monitoramento<br/>Industrial — Ambev</h3>
+        <p class="font-body text-slate-600 font-medium leading-relaxed mb-8">
+          Sistema de inteligência de dados desenvolvido para monitoramento contínuo das operações de <span class="text-amber font-bold">Área Quente</span> (brassagem, fermentação, maturação) e <span class="text-cyan font-bold">Área Fria</span> (filtração, envase) da planta Ambev.
+        </p>
+
+        <div class="space-y-4 mb-8">
+          <div class="flex gap-4 p-5 border border-border rounded-lg bg-white shadow-sm hover:border-cyan transition-colors">
+            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center border-2 border-cyan/20 bg-sky-50 rounded-md">
+              <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
+                <path d="M2 8h12M8 2v12" stroke="#0284c7" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <div class="font-condensed font-bold text-dark text-xl">Coleta de Dados OPC-UA / MQTT</div>
+              <div class="font-body text-sm text-slate-600 font-medium mt-1">Integração direta com CLPs Siemens via Node-RED, coletando mais de 500 tags em tempo real.</div>
+            </div>
+          </div>
+          <div class="flex gap-4 p-5 border border-border rounded-lg bg-white shadow-sm hover:border-amber transition-colors">
+            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center border-2 border-amber/20 bg-amber-50 rounded-md">
+              <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
+                <path d="M2 12L6 7l3 3 3-5L14 7" stroke="#d97706" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </div>
+            <div>
+              <div class="font-condensed font-bold text-dark text-xl">Dashboards de Performance</div>
+              <div class="font-body text-sm text-slate-600 font-medium mt-1">Visualizações interativas de KPIs produtivos com alertas de desvio de processo em tempo real.</div>
+            </div>
+          </div>
+          <div class="flex gap-4 p-5 border border-border rounded-lg bg-white shadow-sm hover:border-cyan transition-colors">
+            <div class="w-10 h-10 flex-shrink-0 flex items-center justify-center border-2 border-cyan/20 bg-sky-50 rounded-md">
+              <svg width="20" height="20" viewBox="0 0 16 16" fill="none">
+                <circle cx="8" cy="8" r="6" stroke="#0284c7" stroke-width="2"/>
+                <path d="M8 5v3l2 2" stroke="#0284c7" stroke-width="2" stroke-linecap="round"/>
+              </svg>
+            </div>
+            <div>
+              <div class="font-condensed font-bold text-dark text-xl">Histórico &amp; Rastreabilidade</div>
+              <div class="font-body text-sm text-slate-600 font-medium mt-1">Armazenamento estruturado em PostgreSQL para análise histórica e rastreabilidade de lotes de produção.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="grid grid-cols-3 gap-4 p-6 border border-border rounded-lg bg-white shadow-sm">
+          <div class="text-center">
+            <div class="font-condensed font-bold text-4xl" style="color:#0284c7;">500+</div>
+            <div class="font-mono text-xs font-bold text-slate-500 mt-2">Tags monitoradas</div>
+          </div>
+          <div class="text-center border-x border-border">
+            <div class="font-condensed font-bold text-4xl" style="color:#d97706;">2</div>
+            <div class="font-mono text-xs font-bold text-slate-500 mt-2">Áreas integradas</div>
+          </div>
+          <div class="text-center">
+            <div class="font-condensed font-bold text-4xl" style="color:#0284c7;">RT</div>
+            <div class="font-mono text-xs font-bold text-slate-500 mt-2">Tempo real</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="timeline" class="py-24 bg-white">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="reveal mb-14">
+      <div class="section-label mb-2">04 // Trajetória</div>
+      <h2 class="section-title text-dark text-5xl sm:text-6xl">JORNADA<br/><span style="color:#0284c7;">PROFISSIONAL</span></h2>
+    </div>
+
+    <div class="relative pl-12 max-w-2xl">
+      <div class="timeline-line"></div>
+
+      <div class="reveal relative mb-14">
+        <div class="timeline-dot" style="color:#d97706; border-color:#d97706;"></div>
+        <div class="card-hover rounded-lg p-8">
+          <div class="flex items-start justify-between flex-wrap gap-2 mb-4">
+            <div>
+              <div class="font-mono text-xs text-amber font-bold mb-2">2018 — 2020</div>
+              <h3 class="font-condensed font-bold text-2xl text-dark">Técnico em Eletrotécnica e Eletrônica</h3>
+              <p class="font-body text-slate-500 font-semibold text-sm mt-1">ETEC Dr. Demetrio de Azevedo Jr — Itapeva, SP</p>
+            </div>
+            <span class="tag-amber bg-orange-50 border-orange-200">Formação Técnica</span>
+          </div>
+          <p class="font-body text-sm text-slate-600 font-medium leading-relaxed">
+            Base sólida em eletricidade industrial, sistemas de controle, automação básica e instrumentação. Onde nasceu a paixão por entender o funcionamento do chão de fábrica.
+          </p>
+        </div>
+      </div>
+
+      <div class="reveal relative mb-14">
+        <div class="timeline-dot" style="color:#64748b; border-color:#64748b;"></div>
+        <div class="card-hover rounded-lg p-8">
+          <div class="flex items-start justify-between flex-wrap gap-2 mb-4">
+            <div>
+              <div class="font-mono text-xs text-slate-500 font-bold mb-2">2021 — 2022</div>
+              <h3 class="font-condensed font-bold text-2xl text-dark">Estagiário de Planejamento</h3>
+              <p class="font-body text-slate-500 font-semibold text-sm mt-1">Klingele Paper &amp; Packaging Group — Itapeva, SP</p>
+            </div>
+            <span class="tag bg-slate-100 border-slate-300 text-slate-600">Jovem Aprendiz</span>
+          </div>
+          <p class="font-body text-sm text-slate-600 font-medium leading-relaxed">
+            Suporte ao planejamento operacional da oficina mecânica e logística de pátio, com foco em otimização de recursos e suporte administrativo via TOTVS.
+          </p>
+        </div>
+      </div>
+
+      <div class="reveal relative mb-14">
+        <div class="timeline-dot" style="color:#0284c7; border-color:#0284c7;"></div>
+        <div class="card-hover rounded-lg p-8 relative overflow-hidden">
+          <div class="absolute top-5 right-5 flex items-center gap-2 bg-sky-50 px-3 py-1.5 rounded-full border border-cyan/20">
+            <div class="w-2 h-2 rounded-full bg-cyan animate-pulse"></div>
+            <span class="font-mono text-xs font-bold text-cyan">Atual</span>
+          </div>
+          <div class="mb-4">
+            <div class="font-mono text-xs text-cyan font-bold mb-2">2021 — Presente</div>
+            <h3 class="font-condensed font-bold text-2xl text-dark">Técnico de Automação</h3>
+            <p class="font-body text-slate-500 font-semibold text-sm mt-1">Ambev — Vidros Paraná</p>
+          </div>
+          <p class="font-body text-sm text-slate-600 font-medium leading-relaxed mb-6">
+            Manutenção e programação de CLPs Siemens (TIA Portal), desenvolvimento de soluções de inteligência de dados industriais, integração OT/IT e criação do Industrial Portal Hub para monitoramento de Área Quente e Fria.
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <span class="tag-amber">CLPs Siemens</span>
+            <span class="tag-amber">TIA Portal</span>
+            <span class="tag">Node-RED</span>
+            <span class="tag">Python</span>
+            <span class="tag">SQL</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal relative mb-14">
+        <div class="timeline-dot" style="color:#10b981; border-color:#10b981;"></div>
+        <div class="card-hover rounded-lg p-8">
+          <div class="flex items-start justify-between flex-wrap gap-2 mb-4">
+            <div>
+              <div class="font-mono text-xs font-bold mb-2" style="color:#10b981;">2023 — 2026 (Previsão)</div>
+              <h3 class="font-condensed font-bold text-2xl text-dark">Automação Industrial</h3>
+              <p class="font-body text-slate-500 font-semibold text-sm mt-1">Universidade Tecnológica Federal do Paraná (UTFPR) — Ponta Grossa, PR</p>
+            </div>
+            <div class="flex items-center gap-2 bg-emerald-50 px-3 py-1.5 rounded-full border border-emerald-200">
+              <div class="w-2 h-2 rounded-full animate-pulse" style="background:#10b981;"></div>
+              <span class="font-mono text-xs font-bold" style="color:#10b981;">Em curso</span>
+            </div>
+          </div>
+          <p class="font-body text-sm text-slate-600 font-medium leading-relaxed">
+            Formação superior focada em controle de processos, instrumentação, redes industriais e integração de sistemas (OT/IT), aliando teoria avançada com prática aplicada à Indústria 4.0.
+          </p>
+        </div>
+      </div>
+
+      <div class="reveal relative">
+        <div class="timeline-dot" style="color:#8b5cf6; border-color:#8b5cf6;"></div>
+        <div class="card-hover rounded-lg p-8">
+          <div class="flex items-start justify-between flex-wrap gap-2 mb-4">
+            <div>
+              <div class="font-mono text-xs font-bold mb-2" style="color:#8b5cf6;">2025 — 2029 (Previsão)</div>
+              <h3 class="font-condensed font-bold text-2xl text-dark">Engenharia de Software</h3>
+              <p class="font-body text-slate-500 font-semibold text-sm mt-1">Unifatecie — Remoto</p>
+            </div>
+            <div class="flex items-center gap-2 bg-purple-50 px-3 py-1.5 rounded-full border border-purple-200">
+              <div class="w-2 h-2 rounded-full animate-pulse" style="background:#8b5cf6;"></div>
+              <span class="font-mono text-xs font-bold" style="color:#8b5cf6;">Em curso</span>
+            </div>
+          </div>
+          <p class="font-body text-sm text-slate-600 font-medium leading-relaxed">
+            Consolidando o conhecimento técnico-industrial com fundamentos sólidos de Engenharia de Software: algoritmos, estruturas de dados, arquitetura de sistemas, desenvolvimento web e gestão de projetos ágeis.
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<footer id="contact" class="border-t border-border py-24 bg-slate-50">
+  <div class="max-w-6xl mx-auto px-5">
+    <div class="reveal text-center mb-20">
+      <div class="section-label mb-4">05 // Contato</div>
+      <h2 class="section-title text-5xl sm:text-6xl text-dark mb-4">
+        VAMOS<br/><span style="color:#0284c7;">CONVERSAR<span class="text-cyan">.</span></span>
+      </h2>
+      <p class="font-body text-slate-600 font-medium max-w-md mx-auto mb-10 leading-relaxed">
+        Seja para falar sobre projetos de automação inteligente, colaborações em dados industriais ou oportunidades de Engenharia de Software — estou disponível.
+      </p>
+      <a href="mailto:brunoProenca@example.com" class="btn-primary">Get in Touch</a>
+    </div>
+
+    <div class="border-t border-border mb-12"></div>
+
+    <div class="flex flex-col md:flex-row items-center justify-between gap-8">
+      <div>
+        <div class="font-condensed font-bold text-2xl text-dark mb-1 italic">Bruno Proença</div>
+        <div class="font-mono text-xs font-bold text-slate-500">Técnico de Automação · Engenharia de Software</div>
+        <div class="font-mono text-xs font-bold text-slate-500 mt-2">Convergindo <span class="text-amber">OT</span> + <span class="text-cyan">IT</span> para decisões inteligentes</div>
+      </div>
+
+      <div class="flex flex-col sm:flex-row items-center gap-6">
+        <a href="https://github.com/bruno-proenca" target="_blank" rel="noopener noreferrer" class="social-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"/>
+          </svg>
+          GitHub · Bruno Proença
+        </a>
+        <a href="https://www.linkedin.com/in/bruno-pr0enca/" target="_blank" rel="noopener noreferrer" class="social-link">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/>
+          </svg>
+          LinkedIn · Bruno Proença
+        </a>
+      </div>
+    </div>
+
+    <div class="mt-12 pt-8 border-t border-border text-center">
+      <p class="font-mono text-xs text-slate-400 font-semibold">
+        © 2026 Bruno Proença — Construído com HTML, Tailwind CSS &amp; JavaScript puro.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<script>
+const hamburger = document.getElementById('hamburger');
+const mobileMenu = document.getElementById('mobile-menu');
+hamburger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+function closeMobileMenu() { mobileMenu.classList.remove('open'); }
+
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal').forEach((el, i) => {
+  el.style.transitionDelay = `${(i % 4) * 80}ms`;
+  revealObserver.observe(el);
+});
+
+const progressObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.querySelectorAll('.progress-fill').forEach(bar => {
+        const w = bar.getAttribute('data-width');
+        setTimeout(() => { bar.style.width = w + '%'; }, 300);
+      });
+      progressObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.card-hover').forEach(card => progressObserver.observe(card));
+
+const track   = document.getElementById('carousel-track');
+const prev    = document.getElementById('carousel-prev');
+const next    = document.getElementById('carousel-next');
+const counter = document.getElementById('carousel-counter');
+const dots    = document.querySelectorAll('.dot');
+let current = 0;
+const total = dots.length;
+let autoTimer;
+
+function goTo(idx) {
+  current = (idx + total) % total;
+  track.style.transform = `translateX(-${current * 100}%)`;
+  counter.textContent = `${current + 1} / ${total}`;
+  dots.forEach((d, i) => d.classList.toggle('active', i === current));
+}
+
+function startAuto() {
+  clearInterval(autoTimer);
+  autoTimer = setInterval(() => goTo(current + 1), 4500);
+}
+
+prev.addEventListener('click', () => { goTo(current - 1); startAuto(); });
+next.addEventListener('click', () => { goTo(current + 1); startAuto(); });
+dots.forEach(dot => {
+  dot.addEventListener('click', () => {
+    goTo(parseInt(dot.dataset.index));
+    startAuto();
+  });
+});
+
+let touchStartX = 0;
+track.parentElement.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
+track.parentElement.addEventListener('touchend', e => {
+  const dx = e.changedTouches[0].clientX - touchStartX;
+  if (Math.abs(dx) > 40) { dx < 0 ? goTo(current + 1) : goTo(current - 1); startAuto(); }
+});
+
+startAuto();
+
+const sections = document.querySelectorAll('section[id], footer[id]');
+const navLinks  = document.querySelectorAll('.nav-link');
+
+const navObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      const id = entry.target.getAttribute('id');
+      navLinks.forEach(link => {
+        const href = link.getAttribute('href').replace('#', '');
+        if (href === id) link.style.color = '#0284c7';
+        else link.style.color = '';
+      });
+    }
+  });
+}, { threshold: 0.4 });
+
+sections.forEach(s => navObserver.observe(s));
+</script>
+</body>
+</html>
